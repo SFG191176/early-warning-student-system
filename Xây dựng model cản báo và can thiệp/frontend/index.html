@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Cảnh báo Sinh viên Yếu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎓 Hệ thống Cảnh báo Sinh viên Yếu</h1>
+            <p class="subtitle">Phát hiện sớm sinh viên có nguy cơ học yếu</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Left Column - Upload Section -->
+            <section class="upload-section">
+                <h2>📤 Tải lên dữ liệu</h2>
+                
+                <div class="upload-area" id="uploadArea">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p>Kéo file vào đây hoặc</p>
+                    <label class="file-input-label">
+                        chọn file
+                        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" hidden>
+                    </label>
+                    <p class="file-format">Hỗ trợ: CSV, XLSX, XLS</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>📋 Định dạng file</h3>
+                    <p>File của bạn phải chứa các cột:</p>
+                    <ul>
+                        <li><code>ma_sv</code> - Mã sinh viên</li>
+                        <li><code>diem_qua_trinh</code> - Điểm quá trình (0-10)</li>
+                        <li><code>diem_giua_ky</code> - Điểm giữa kỳ (0-10)</li>
+                        <li><code>diem_cuoi_ky</code> - Điểm cuối kỳ (0-10)</li>
+                    </ul>
+                    <p style="margin-top: 10px;">
+                        <a href="sample_data.csv" download style="color: #3498db; text-decoration: underline;">
+                            📥 Tải file mẫu
+                        </a>
+                    </p>
+                </div>
+
+                <button class="btn btn-primary" id="predictBtn" disabled>
+                    🔮 Dự đoán
+                </button>
+
+                <div id="fileInfo" class="file-info" style="display: none;">
+                    <p>File: <strong id="fileName"></strong></p>
+                    <p>Kích thước: <strong id="fileSize"></strong></p>
+                </div>
+            </section>
+
+            <!-- Right Column - Results Section -->
+            <section class="results-section">
+                <h2>📊 Kết quả dự đoán</h2>
+                
+                <div id="statusContainer" style="display: none;">
+                    <div class="status-box" id="statusBox"></div>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="spinner" style="display: none;">
+                    <div class="spinner-circle"></div>
+                    <p>Đang xử lý...</p>
+                </div>
+
+                <!-- Results Table -->
+                <div id="resultsContainer" style="display: none;">
+                    <div class="results-stats">
+                        <div class="stat-card">
+                            <span class="stat-label">Tổng sinh viên</span>
+                            <span class="stat-value" id="totalStudents">0</span>
+                        </div>
+                        <div class="stat-card risk-high">
+                            <span class="stat-label">Nguy cơ cao</span>
+                            <span class="stat-value" id="riskHigh">0</span>
+                        </div>
+                        <div class="stat-card risk-medium">
+                            <span class="stat-label">Nguy cơ vừa</span>
+                            <span class="stat-value" id="riskMedium">0</span>
+                        </div>
+                        <div class="stat-card risk-low">
+                            <span class="stat-label">An toàn</span>
+                            <span class="stat-value" id="riskLow">0</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="resultsTable" class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã SV</th>
+                                    <th id="th-name" style="display: none;">Tên SV</th>
+                                    <th>Dự đoán</th>
+                                    <th>Mô tả</th>
+                                    <th>Mức độ rủi ro</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" id="downloadBtn">
+                            💾 Tải xuống CSV
+                        </button>
+                        <button class="btn btn-secondary" id="resetBtn">
+                            🔄 Làm mới
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <p>Chưa có dữ liệu. Vui lòng tải lên file để bắt đầu dự đoán.</p>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorContainer" class="error-box" style="display: none;">
+                    <h3>❌ Lỗi</h3>
+                    <p id="errorMessage"></p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Hệ thống Cảnh báo Sinh viên Yếu v1.0 | © 2024</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
